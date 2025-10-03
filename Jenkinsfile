@@ -7,7 +7,7 @@ pipeline {
     GIT_BRANCH           = 'main'
     GIT_CREDENTIAL_ID    = 'skala-github-id'
 
-    IMAGE_NAME           = 'springboot-practice'
+    IMAGE_NAME           = 'sk085-springboot-practice'
     IMAGE_TAG_PREFIX     = '1.0.0'
     IMAGE_REGISTRY_URL   = 'amdp-registry.skala-ai.com'
     IMAGE_REGISTRY_PROJECT = 'skala25a'

@@ -4,5 +4,5 @@ resources:
   - ingress.yaml
 
 images:
-  - name: amdp-registry.skala-ai.com/skala25a/springboot-practice
+  - name: amdp-registry.skala-ai.com/skala25a/sk085-springboot-practice
     newTag: 1.0.0-fc701c91a288

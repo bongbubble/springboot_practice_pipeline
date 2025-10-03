@@ -2,7 +2,7 @@
 set -euo pipefail
 
 KUSTOMIZATION_FILE="${1:-k8s/base/kustomization.yaml}"
-IMAGE_NAME="${IMAGE_NAME:-amdp-registry.skala-ai.com/skala25a/springboot-practice}"
+IMAGE_NAME="${IMAGE_NAME:-amdp-registry.skala-ai.com/skala25a/sk085-springboot-practice}"
 IMAGE_TAG="${IMAGE_TAG:-latest}"
 
 if [[ ! -f "${KUSTOMIZATION_FILE}" ]]; then

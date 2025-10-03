@@ -2,7 +2,7 @@
 set -euo pipefail
 
 REGISTRY="${REGISTRY:?REGISTRY not set}"
-IMAGE_NAME="${IMAGE_NAME:-springboot-practice}"
+IMAGE_NAME="${IMAGE_NAME:-sk085-springboot-practice}"
 IMAGE_TAG="${IMAGE_TAG:-latest}"
 REGISTRY_USER="${REGISTRY_USER:-}"
 REGISTRY_PASSWORD="${REGISTRY_PASSWORD:-}"

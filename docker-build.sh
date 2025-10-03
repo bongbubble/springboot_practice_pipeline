@@ -2,7 +2,7 @@
 set -euo pipefail
 
 REGISTRY="${REGISTRY:-}"
-IMAGE_NAME="${IMAGE_NAME:-springboot-practice}"
+IMAGE_NAME="${IMAGE_NAME:-sk085-springboot-practice}"
 IMAGE_TAG="${IMAGE_TAG:-latest}"
 PLATFORM="${PLATFORM:-linux/amd64}"
 DOCKER_BUILD_ARGS="${DOCKER_BUILD_ARGS:-}"
@@ -15,7 +15,7 @@ fi
 
 echo "Building ${FULL_IMAGE} for ${PLATFORM}"
 
-if [[ ! -f target/springboot-practice-0.0.1-SNAPSHOT.jar ]]; then
+if [[ ! -f target/myspringapp-0.0.1-SNAPSHOT.jar ]]; then
   echo "Packaging application..."
   ./mvnw -q -DskipTests package
 fi

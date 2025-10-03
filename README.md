@@ -11,7 +11,7 @@ This repository (`springboot_practice`) demonstrates a Jenkins + ArgoCD GitOps w
 ## Repository Layout
 
 - `src/` – Spring Boot REST API with Swagger UI enabled (via Springdoc)
-- `Dockerfile`, `docker-build.sh`, `docker-push.sh` – container build & push artefacts (image name defaults to `springboot-practice`)
+- `Dockerfile`, `docker-build.sh`, `docker-push.sh` – container build & push artefacts (image name defaults to `sk085-springboot-practice`)
 - `k8s/` – Kustomize-based Kubernetes manifests (`k8s/base`, `k8s/overlays/dev`)
 - `scripts/update-k8s-image.sh` – helper script to bump the image tag in Kustomize
 - `Jenkinsfile` – declarative Jenkins pipeline definition tailored for the practice environment
@@ -36,7 +36,7 @@ This repository (`springboot_practice`) demonstrates a Jenkins + ArgoCD GitOps w
 
 ```bash
 ./docker-build.sh
-REGISTRY=amdp-registry.skala-ai.com IMAGE_NAME=skala25a/springboot-practice IMAGE_TAG=local ./docker-build.sh
+REGISTRY=amdp-registry.skala-ai.com IMAGE_NAME=skala25a/sk085-springboot-practice IMAGE_TAG=local ./docker-build.sh
 ```
 
 ## Kubernetes Manifests (dry run)
