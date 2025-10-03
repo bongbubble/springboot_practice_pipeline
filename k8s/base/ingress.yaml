@@ -1,18 +1,25 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: springboot-practice
   annotations:
-    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  name: sk085-myfirst-api-server
+  namespace: skala-practice
 spec:
+  ingressClassName: public-nginx
   rules:
-    - host: springboot-practice.local
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: springboot-practice
-                port:
-                  number: 80
+  - host: ingress.skala25a.project.skala-ai.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: sk085-springboot-practice
+            port:
+              number: 8080
+        path: /sk085(/|$)(.*)
+        pathType: ImplementationSpecific
+  tls:
+  - hosts:
+    - 'ingress.skala25a.project.skala-ai.com'
+    secretName: skala25-project-tls-cert
