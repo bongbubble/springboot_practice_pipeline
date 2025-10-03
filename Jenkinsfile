@@ -13,7 +13,7 @@ pipeline {
     IMAGE_REGISTRY_PROJECT = 'skala25a'
 
     DOCKER_CREDENTIAL_ID = 'skala-image-registry-id'
-    K8S_NAMESPACE        = 'kala-practice'
+    K8S_NAMESPACE        = 'skala-practice'
     KUSTOMIZATION_FILE   = 'k8s/base/kustomization.yaml'
     // =======================
   }
@@ -82,14 +82,19 @@ pipeline {
         script {
           def pending = sh(script: 'git status --porcelain', returnStdout: true).trim()
           if (pending) {
-            sh '''
-              set -eux
-              git config user.email "jenkins@local"
-              git config user.name "jenkins"
-              git commit -m "chore: update image tag to ${FINAL_IMAGE_TAG}" || true
-              git pull --rebase origin ${GIT_BRANCH}
-              git push origin HEAD:${GIT_BRANCH}
-            '''
+            withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIAL_ID, usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
+              sh '''
+                set -eux
+                git config user.email "jenkins@local"
+                git config user.name "jenkins"
+                git commit -m "chore: update image tag to ${FINAL_IMAGE_TAG}" || true
+                git config credential.helper store
+                printf "https://${GIT_USER}:${GIT_TOKEN}@github.com\n" > ~/.git-credentials
+                git pull --rebase origin ${GIT_BRANCH}
+                git push origin HEAD:${GIT_BRANCH}
+                rm -f ~/.git-credentials
+              '''
+            }
           } else {
             echo 'No manifest changes detected.'
           }
