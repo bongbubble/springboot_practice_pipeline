@@ -9,11 +9,11 @@ pipeline {
 
     IMAGE_NAME           = 'springboot-practice'
     IMAGE_TAG_PREFIX     = '1.0.0'
-    IMAGE_REGISTRY_URL   = 'ghcr.io'
-    IMAGE_REGISTRY_PROJECT = 'example'
+    IMAGE_REGISTRY_URL   = 'amdp-registry.skala-ai.com'
+    IMAGE_REGISTRY_PROJECT = 'skala25a'
 
-    DOCKER_CREDENTIAL_ID = 'registry-credentials'
-    K8S_NAMESPACE        = 'dev'
+    DOCKER_CREDENTIAL_ID = 'skala-image-registry-id'
+    K8S_NAMESPACE        = 'kala-practice'
     KUSTOMIZATION_FILE   = 'k8s/base/kustomization.yaml'
     // =======================
   }
