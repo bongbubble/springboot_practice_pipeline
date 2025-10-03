@@ -1,0 +1,22 @@
+{
+  "groups": [
+    {
+      "name": "developer",
+      "type": "com.skala.springbootpractice.config.DeveloperProperties",
+      "sourceType": "com.skala.springbootpractice.config.DeveloperProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "developer.owner",
+      "type": "com.skala.springbootpractice.dto.Owner",
+      "sourceType": "com.skala.springbootpractice.config.DeveloperProperties"
+    },
+    {
+      "name": "developer.team",
+      "type": "com.skala.springbootpractice.dto.Team",
+      "sourceType": "com.skala.springbootpractice.config.DeveloperProperties"
+    }
+  ],
+  "hints": []
+}

@@ -1,0 +1,18 @@
+namespace: dev
+
+resources:
+  - ../../base
+
+namePrefix: dev-
+
+patches:
+  - target:
+      kind: Deployment
+      name: springboot-practice
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: springboot-practice
+      spec:
+        replicas: 1

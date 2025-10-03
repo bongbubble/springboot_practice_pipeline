@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-practice
+  labels:
+    app: springboot-practice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springboot-practice
+  template:
+    metadata:
+      labels:
+        app: springboot-practice
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "8080"
+    spec:
+      containers:
+        - name: springboot-practice
+          image: amdp-registry.skala-ai.com/skala25a/springboot-practice:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+          readinessProbe:
+            httpGet:
+              path: /probe/ready
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /probe/alive
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 30
