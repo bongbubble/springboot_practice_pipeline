@@ -66,29 +66,29 @@ pipeline {
         }
     }
 
-    // k8s 리소스 파일(deploy.yaml) 수정
+    // k8s 리소스 파일(base/deploymentment.yaml) 수정
     stage('Update K8s Manifests') {
       steps {
         script {
-          echo '=== Update deploy.yaml with new image tag ==='
+          echo '=== Update base/deployment.yaml with new image tag ==='
         }
         sh '''
             set -eux
-            test -f ./k8s/deploy.yaml
+            test -f ./k8s/base/deployment.yaml
 
             echo "--- BEFORE ---"
-            grep -n 'image:' ./k8s/deploy.yaml || true
+            grep -n 'image:' ./k8s/base/deployment.yaml || true
 
             # IMAGE_REGISTRY/IMAGE_NAME 패턴의 태그를 FINAL_IMAGE_TAG 로 치환
-            sed -Ei "s#(image:[[:space:]]*$IMAGE_REGISTRY/$IMAGE_NAME)[^[:space:]]+#\\1:$FINAL_IMAGE_TAG#" ./k8s/deploy.yaml
+            sed -Ei "s#(image:[[:space:]]*$IMAGE_REGISTRY/$IMAGE_NAME)[^[:space:]]+#\\1:$FINAL_IMAGE_TAG#" ./k8s/base/deployment.yaml
 
             echo "--- AFTER ---"
-            grep -n 'image:' ./k8s/deploy.yaml || true
+            grep -n 'image:' ./k8s/base/deployment.yaml || true
         '''
       }
     }
 
-    // deployment yaml의 Git 커밋/푸시
+    // base/deploymentment yaml의 Git 커밋/푸시
     stage('Git Commit & Push (gitops)') {
       steps {
         script {
@@ -103,7 +103,7 @@ pipeline {
             git config --global user.email "skala@skala-ai.com"
 
             git fetch origin || true
-            cp ./k8s/deploy.yaml ./k8s/deploy.yaml.backup
+            cp ./k8s/base/deployment.yaml ./k8s/base/deployment.yaml.backup
 
             # gitops 브랜치 체크아웃 (있으면 강제 이동, 없으면 origin/gitops 기준 생성 또는 로컬 생성)
             if git show-ref --verify --quiet refs/heads/gitops || git show-ref --verify --quiet refs/remotes/origin/gitops; then
@@ -113,11 +113,11 @@ pipeline {
             fi
 
             # 백업본을 현재 브랜치로 반영 후 다시 치환(이중확인)
-            cp ./k8s/deploy.yaml.backup ./k8s/deploy.yaml
-            sed -Ei "s#(image:[[:space:]]*${IMAGE_REGISTRY}/${IMAGE_NAME})[^[:space:]]+#\\1:${FINAL_IMAGE_TAG}#" ./k8s/deploy.yaml
-            rm -f ./k8s/deploy.yaml.backup
+            cp ./k8s/base/deployment.yaml.backup ./k8s/base/deployment.yaml
+            sed -Ei "s#(image:[[:space:]]*${IMAGE_REGISTRY}/${IMAGE_NAME})[^[:space:]]+#\\1:${FINAL_IMAGE_TAG}#" ./k8s/base/deployment.yaml
+            rm -f ./k8s/base/deployment.yaml.backup
 
-            git add ./k8s/deploy.yaml || true
+            git add ./k8s/base/deployment.yaml || true
             git status
         '''
 
@@ -131,7 +131,7 @@ pipeline {
             sh '''
                 set -eux
                 if ! git diff --cached --quiet; then
-                    git commit -m "[AUTO] Update deploy.yaml with image $FINAL_IMAGE_TAG"
+                    git commit -m "[AUTO] Update base/deployment.yaml with image $FINAL_IMAGE_TAG"
                     git remote set-url origin https://$GIT_PUSH_USER:$GIT_PUSH_PASSWORD@$GIT_REPO_PATH
                     git push origin gitops --force
                     echo "Pushed to gitops"
