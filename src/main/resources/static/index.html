@@ -230,52 +230,6 @@
       </p>
     </header>
 
-    <div class="grid two">
-      <section class="card">
-        <h2 style="margin-top: 0;">개발자 / 팀 정보</h2>
-        <div v-if="developer" class="grid">
-          <div class="grid">
-            <div>
-              <h3 style="margin-bottom: 4px; font-size: 1rem; color: #1f2937;">Owner</h3>
-              <p style="margin: 0">{{ developer.owner.name }}</p>
-              <small style="color: #64748b;">{{ developer.owner.role }} · {{ developer.owner.level }}</small>
-            </div>
-            <div>
-              <h3 style="margin-bottom: 4px; font-size: 1rem; color: #1f2937;">Team</h3>
-              <p style="margin: 0">{{ developer.team.position }}</p>
-              <small style="color: #64748b;">{{ developer.team.detail }}</small>
-            </div>
-          </div>
-        </div>
-        <p v-else class="badge warning">정보를 불러오는 중...</p>
-      </section>
-
-      <section class="card">
-        <h2 style="margin-top: 0;">애플리케이션 상태</h2>
-        <div v-if="probe">
-          <div class="status-indicator">
-            <span :class="['dot', probeClass(probe.liveness)]"></span>
-            <strong>Liveness:</strong>
-            <span>{{ probe.liveness }}</span>
-          </div>
-          <div class="status-indicator">
-            <span :class="['dot', probeClass(probe.readiness)]"></span>
-            <strong>Readiness:</strong>
-            <span>{{ probe.readiness }}</span>
-          </div>
-          <div style="display: flex; gap: 12px; margin-top: 16px; justify-content: flex-start;">
-            <button class="btn-secondary" @click="setProbe('CORRECT', 'ACCEPTING_TRAFFIC')" :disabled="probeBusy">
-              정상 상태 전환
-            </button>
-            <button class="btn-danger" @click="setProbe('BROKEN', 'REFUSING_TRAFFIC')" :disabled="probeBusy">
-              점검 모드 전환
-            </button>
-          </div>
-        </div>
-        <p v-else class="badge warning">상태 정보를 불러오는 중...</p>
-      </section>
-    </div>
-
     <section class="card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
         <div>
@@ -369,11 +323,8 @@
 
     createApp({
       setup() {
-        const developer = ref(null);
-        const probe = ref(null);
         const users = ref([]);
         const usersLoading = ref(false);
-        const probeBusy = ref(false);
         const deleteBusy = ref(false);
         const formBusy = ref(false);
 
@@ -407,24 +358,6 @@
           setTimeout(() => (toast.visible = false), 2500);
         };
 
-        const loadDeveloper = async () => {
-          try {
-            developer.value = await api("/developer-info");
-          } catch (err) {
-            console.error(err);
-            showToast("오류", "개발자 정보를 불러오지 못했습니다.");
-          }
-        };
-
-        const loadProbe = async () => {
-          try {
-            probe.value = await api("/probe");
-          } catch (err) {
-            console.error(err);
-            showToast("오류", "상태 정보를 불러오지 못했습니다.");
-          }
-        };
-
         const loadUsers = async () => {
           usersLoading.value = true;
           try {
@@ -435,23 +368,6 @@
             showToast("오류", "사용자 목록을 불러오지 못했습니다.");
           } finally {
             usersLoading.value = false;
-          }
-        };
-
-        const setProbe = async (liveness, readiness) => {
-          probeBusy.value = true;
-          try {
-            probe.value = await api("/probe", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ liveness, readiness })
-            });
-            showToast("성공", "애플리케이션 상태가 업데이트되었습니다.");
-          } catch (err) {
-            console.error(err);
-            showToast("오류", "상태 변경에 실패했습니다.");
-          } finally {
-            probeBusy.value = false;
           }
         };
 
@@ -533,24 +449,13 @@
           }
         };
 
-        const probeClass = (state) => {
-          if (!state) return "down";
-          const upper = state.toUpperCase();
-          if (upper.includes("ACCEPT") || upper === "CORRECT") return "healthy";
-          if (upper.includes("REFUS")) return "degraded";
-          return "down";
-        };
-
         onMounted(async () => {
-          await Promise.all([loadDeveloper(), loadProbe(), loadUsers()]);
+          await loadUsers();
         });
 
         return {
-          developer,
-          probe,
           users,
           usersLoading,
-          probeBusy,
           deleteBusy,
           formBusy,
           filters,
@@ -564,8 +469,6 @@
           submitUser,
           confirmDelete,
           loadUsers,
-          setProbe,
-          probeClass
         };
       }
     }).mount("#app");
