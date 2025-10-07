@@ -6,4 +6,4 @@ resources:
 
 images:
   - name: amdp-registry.skala-ai.com/skala25a/sk085-springboot-practice
-    newTag: 1.0.0-4d523778b99c
+    newTag: 1.0.0-033f65fc9d3b
