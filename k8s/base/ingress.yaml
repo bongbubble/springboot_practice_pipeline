@@ -4,7 +4,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/rewrite-target: /$2
-  name: sk085-myfirst-api-server
+  name: sk085-springboot-practice
   namespace: skala-practice
 spec:
   ingressClassName: public-nginx
