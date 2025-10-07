@@ -1,6 +1,5 @@
 [
     {
-        "id": 1,
         "name": "alice",
         "email": "alice@example.com",
         "hobbies": [
@@ -9,7 +8,6 @@
         ]
     },
     {
-        "id": 2,
         "name": "bob",
         "email": "bob@example.com",
         "hobbies": [
@@ -18,7 +16,6 @@
         ]
     },
     {
-        "id": 3,
         "name": "charlie",
         "email": "charlie@example.com",
         "hobbies": [
