@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: sk085-springboot-practice
-          image: amdp-registry.skala-ai.com/skala25a/sk085-springboot-practice:1.0.0-1da019b94852
+          image: amdp-registry.skala-ai.com/skala25a/sk085-springboot-practice:1.0.0-e2918a4
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
