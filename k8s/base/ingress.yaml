@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-  name: sk085-springboot-practice
+  name: sk085-myfirst-ingress
   namespace: skala-practice
 spec:
   ingressClassName: public-nginx
@@ -21,4 +21,4 @@ spec:
   tls:
   - hosts:
     - sk085-ingress.skala25a.project.skala-ai.com
-    secretName: sk085-ingress-project-tls-cert
+    secretName: sk085-myfirst-ingress-tls-cert

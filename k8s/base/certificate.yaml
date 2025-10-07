@@ -1,10 +1,10 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: sk085-ingress-project-tls-cert
+  name: sk085-myfirst-ingress-tls-cert
   namespace: skala-practice
 spec:
-  secretName: sk085-ingress-project-tls-cert
+  secretName: sk085-myfirst-ingress-tls-cert
   dnsNames:
     - sk085-ingress.skala25a.project.skala-ai.com
   issuerRef:
