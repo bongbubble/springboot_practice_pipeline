@@ -2,6 +2,7 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingress.yaml
+  - certificate.yaml
 
 images:
   - name: amdp-registry.skala-ai.com/skala25a/sk085-springboot-practice

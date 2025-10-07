@@ -3,13 +3,12 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
   name: sk085-springboot-practice
   namespace: skala-practice
 spec:
   ingressClassName: public-nginx
   rules:
-  - host: ingress.skala25a.project.skala-ai.com
+  - host: sk085-ingress.skala25a.project.skala-ai.com
     http:
       paths:
       - backend:
@@ -17,9 +16,9 @@ spec:
             name: sk085-springboot-practice
             port:
               number: 8080
-        path: /sk085(/|$)(.*)
-        pathType: ImplementationSpecific
+        path: /
+        pathType: Prefix
   tls:
   - hosts:
-    - 'ingress.skala25a.project.skala-ai.com'
-    secretName: skala25-project-tls-cert
+    - sk085-ingress.skala25a.project.skala-ai.com
+    secretName: sk085-ingress-project-tls-cert
