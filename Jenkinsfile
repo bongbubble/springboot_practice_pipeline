@@ -103,7 +103,3 @@ pipeline {
     }
   }
 }
-
-sh """
-    docker push amdp-registry.skala-ai.com/skala25a/sk085-springboot-practice:1.0.0-4683046ef222 --debug
-"""
