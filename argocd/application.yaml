@@ -2,19 +2,19 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: springboot-practice
-  namespace: argocd
+  namespace: skala-argocd
 spec:
-  project: default
-  source:
-    repoURL: https://github.com/your-org/springboot_practice.git
-    targetRevision: main
-    path: k8s/overlays/dev
   destination:
-    server: https://kubernetes.default.svc
-    namespace: dev
+    namespace: skala-practice
+    server: https://96BD83E8CE5CE0396D006BC5CEB350B0.gr7.ap-northeast-2.eks.amazonaws.com
+  project: class-3
+  source:
+    path: k8s
+    repoURL: https://github.com/bongbubble/springboot_practice_pipeline.git
+    targetRevision: main
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - PrunePropagationPolicy=background
