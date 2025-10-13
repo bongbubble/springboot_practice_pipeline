@@ -1,9 +1,38 @@
 import axios from 'axios';
 
-const baseURL = import.meta.env.VITE_API_BASE_URL || '/api';
+const DEFAULT_BASE_PATH = '/api';
+const LOCAL_HOSTNAMES = new Set(['localhost', '127.0.0.1', '::1']);
+
+const resolveBaseURL = () => {
+  const envValue = import.meta.env.VITE_API_BASE_URL;
+
+  if (typeof window === 'undefined') {
+    return envValue || DEFAULT_BASE_PATH;
+  }
+
+  if (!envValue) {
+    return DEFAULT_BASE_PATH;
+  }
+
+  try {
+    const parsed = new URL(envValue, window.location.origin);
+    const envIsAbsolute = /^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(envValue);
+    const sameOrigin = parsed.origin === window.location.origin;
+    const runningLocally = LOCAL_HOSTNAMES.has(window.location.hostname);
+
+    if (envIsAbsolute) {
+      return !sameOrigin && runningLocally ? DEFAULT_BASE_PATH : envValue;
+    }
+
+    const path = parsed.pathname.startsWith('/') ? parsed.pathname : `/${parsed.pathname}`;
+    return path || DEFAULT_BASE_PATH;
+  } catch {
+    return DEFAULT_BASE_PATH;
+  }
+};
 
 const api = axios.create({
-  baseURL,
+  baseURL: resolveBaseURL(),
   headers: {
     'Content-Type': 'application/json'
   }
